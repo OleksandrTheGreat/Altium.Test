@@ -56,6 +56,10 @@ namespace altium.test.file.sorter
 
       Parallel.ForEach(
         File.ReadLines(targetFilePath),
+        new ParallelOptions
+        {
+          MaxDegreeOfParallelism = 10
+        },
         line =>
         {
           if (string.IsNullOrWhiteSpace(line))
