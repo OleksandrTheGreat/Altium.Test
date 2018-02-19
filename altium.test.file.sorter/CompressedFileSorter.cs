@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace altium.test.file.sorter
 {
@@ -114,7 +115,6 @@ namespace altium.test.file.sorter
     {
       using (var fs = new FileStream(sortedFilePath, FileMode.Create, FileAccess.Write))
       using (var bs = new BufferedStream(fs, bufferSize))
-      using (var sw = new StreamWriter(bs))
       {
         var rowsWritten = 0;
         var total = sorted.Count();
@@ -122,7 +122,10 @@ namespace altium.test.file.sorter
         foreach (var row in sorted)
         {
           for (var i = 0; i < row.Count; i++)
-            sw.WriteLine(row.Line);
+          {
+            var bytes = Encoding.ASCII.GetBytes($"{row.Line}\n");
+            bs.Write(bytes, 0, bytes.Length);
+          }
 
           rowsWritten++;
 
