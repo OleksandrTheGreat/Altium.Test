@@ -1,9 +1,9 @@
 ## Description
 Implementation of a test task for Altium.
  
-Used IDE: Visual Studio 2017
-Language: C# for .Net
-Framework: .Net Core 2.0 
+* Used IDE: Visual Studio 2017
+* Language: C# for .Net
+* Framework: .Net Core 2.0 
 
 ## Solution 
 
@@ -39,14 +39,14 @@ This does not seem to be the best solution. However, this solution turned out to
 
 ## Some of test results
 
-1G
-Generate: 00:00:11:854
-Sort:     00:01:31:846
+#1G
+* Generate: 00:00:11:854
+* Sort:     00:01:31:846
 
-10G
-Generate: 00:01:56:941
-Sort:     00:06:05:451
+#10G
+* Generate: 00:01:56:941
+* Sort:     00:06:05:451
 
-100G
-Generate: 00:19:26:166
-Sort: 	  00:54:42:304
+#100G
+* Generate: 00:19:26:166
+* Sort: 	  00:54:42:304
