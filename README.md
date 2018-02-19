@@ -10,19 +10,19 @@ Implementation of a test task for Altium.
 Solution consists on 4 main modules:
 
 1) Client console application
-  altium.test.file.console
+  * altium.test.file.console
   
 2) Scenarios to execute independently for different UI implementations
-  altium.test.file.scenarios
-  altium.test.file.scenarios.api 
+  * altium.test.file.scenarios
+  * altium.test.file.scenarios.api 
   
 2) Test file generator
-  altium.test.file.generator
-  altium.test.file.generator.api
+  * altium.test.file.generator
+  * altium.test.file.generator.api
 
 3) Test file sorter
-  altium.test.file.sorter
-  altium.test.file.sorter.api
+  * altium.test.file.sorter
+  * altium.test.file.sorter.api
 
 ## Use
 Build the solution and run /altium.test.file.console/bin/Debug/netcoreapp2.0/win10-x64/altium.test.file.console.exe 
