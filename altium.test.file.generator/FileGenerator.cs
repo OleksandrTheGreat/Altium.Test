@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using altium.test.file.generator.api;
 
 namespace altium.test.file.generator
@@ -27,11 +25,12 @@ namespace altium.test.file.generator
       long size,
       int maxNumber,
       string[] values,
-      int bufferSize
+      int bufferSize,
+      int rowBlockSize
     )
     {
       Validate(values);
-      FillFile(path, size, maxNumber, values, bufferSize);
+      FillFile(path, size, maxNumber, values, bufferSize, rowBlockSize);
     }
 
     private static void Validate(string[] values)
@@ -47,7 +46,8 @@ namespace altium.test.file.generator
       long size,
       int maxNumber,
       string[] values,
-      int bufferSize
+      int bufferSize,
+      int rowBlockSize
     )
     {
       using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
@@ -57,7 +57,7 @@ namespace altium.test.file.generator
 
         while (fs.Position < size)
         {
-          var rows = GenerateRows(random, maxNumber, values, 1000);
+          var rows = GenerateRows(random, maxNumber, values, rowBlockSize);
           var len = rows.Length;
           var leftSize = size - fs.Position;
           var count = leftSize < len ? leftSize : len;
@@ -86,7 +86,7 @@ namespace altium.test.file.generator
       return sb.ToString();
     }
 
-      private static string GenerateRow(
+    private static string GenerateRow(
       Random random,
       int maxNumber,
       string[] values

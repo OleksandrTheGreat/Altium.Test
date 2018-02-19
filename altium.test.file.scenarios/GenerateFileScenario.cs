@@ -58,7 +58,8 @@ namespace altium.test.file.scenarios
         settings.FileSize,
         settings.MaxNumber,
         settings.Strings,
-        settings.BufferSize
+        settings.BufferSize,
+        settings.RowBlockSize
       );
 
       var t2 = DateTime.Now;

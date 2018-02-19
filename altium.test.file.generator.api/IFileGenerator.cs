@@ -12,12 +12,14 @@ namespace altium.test.file.generator.api
     ///<param name="maxNumber">Max template "Number" value</param>
     ///<param name="strings">List of template "String" values </param>
     ///<param name="bufferSize">Write buffer size</param>
+    ///<param name="rowBlockSize">Row buffer block size</param>
     void Generate(
       string path,
       long size,
       int maxNumber,
       string[] values,
-      int bufferSize
+      int bufferSize,
+      int rowBlockSize
     );
   }
 }

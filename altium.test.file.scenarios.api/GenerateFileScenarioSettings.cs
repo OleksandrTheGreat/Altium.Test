@@ -7,5 +7,6 @@
     public int MaxNumber { get; set; }
     public string[] Strings { get; set; }
     public int BufferSize { get; set; }
+    public int RowBlockSize { get; set; }
   }
 }

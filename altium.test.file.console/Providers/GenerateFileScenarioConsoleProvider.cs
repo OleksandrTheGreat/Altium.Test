@@ -14,8 +14,9 @@ namespace altium.test.file.console.Providers
       xConsole.WriteHeader($"Generating file:\n");
       Console.WriteLine($"File path: {settings.FilePath}");
       Console.WriteLine($"File size: {settings.FileSize.ToString("#,###,##0")} Bytes");
-      Console.WriteLine($"Max Number: {settings.MaxNumber}");
+      Console.WriteLine($"Max Number: {settings.MaxNumber:#,###,##0}");
       Console.WriteLine($"Buffer size: {settings.BufferSize:#,###,##0} Bytes");
+      Console.WriteLine($"Row block size: {settings.RowBlockSize:#,###,##0}");
       Console.WriteLine($"String list: {String.Join(separator, settings.Strings)}");
 
       var proceed = xConsole.Ask("Proceed? (y/n) ");
@@ -45,6 +46,10 @@ namespace altium.test.file.console.Providers
       var defaultBufferSize = Config.GetApplicationSetting<int>("DefaultBufferSize");
       xConsole.WriteQuestion($"Enter write buffer size (default: {defaultBufferSize: #,###,###}): ");
       settings.BufferSize = xConsole.ReadInt(defaultBufferSize);
+
+      var defaultRowBlockSize = Config.GetApplicationSetting<int>("DefaultRowBlockSize");
+      xConsole.WriteQuestion($"Enter row buffer size (default: {defaultRowBlockSize: #,###,###}): ");
+      settings.RowBlockSize = xConsole.ReadInt(defaultRowBlockSize);
 
       var defaultStringValues = Config.GetApplicationSetting<string>("DefaultStringValues");
       xConsole.WriteQuestion($"Enter String list separated by \"{separator}\" (or leave empty to use default String values): ");

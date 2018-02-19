@@ -1,7 +1,6 @@
 ﻿using altium.test.file.sorter.api;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -42,6 +41,7 @@ namespace altium.test.file.sorter
       var sorted = Sort(compressed);
 
       Write(
+        targetFilePath,
         sortedFilePath,
         sorted, 
         bufferSize
@@ -88,8 +88,6 @@ namespace altium.test.file.sorter
       return result;
     }
 
-
-
     private IOrderedEnumerable<CompressedFileRow> Sort(ConcurrentDictionary<string, int> compressed)
     {
       return
@@ -120,6 +118,7 @@ namespace altium.test.file.sorter
     }
 
     private void Write(
+      string targetFilePath,
       string sortedFilePath,
       IOrderedEnumerable<CompressedFileRow> sorted,
       int bufferSize
@@ -128,6 +127,8 @@ namespace altium.test.file.sorter
       using (var fs = new FileStream(sortedFilePath, FileMode.Create, FileAccess.Write))
       using (var bs = new BufferedStream(fs, bufferSize))
       {
+        fs.SetLength(new FileInfo(targetFilePath).Length);
+
         var rowsWritten = 0;
         var total = sorted.Count();
 

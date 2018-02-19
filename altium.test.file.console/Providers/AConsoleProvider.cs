@@ -30,7 +30,7 @@ namespace altium.test.file.console.Providers
 
     public void NotifyStarted()
     {
-      Console.WriteLine("\nStarted");
+      Console.WriteLine($"\nStarted at {DateTime.Now:HH:mm:ss}");
     }
   }
 }

@@ -40,13 +40,13 @@ This does not seem to be the best solution. However, this solution turned out to
 ## Some of test results
 
 #1G
-* Generate: 00:00:11:854
-* Sort:     00:01:31:846
+* Generated: 00:00:11:211
+* Sorted:    00:01:27:395
 
-#10G
-* Generate: 00:01:56:941
-* Sort:     00:06:05:451
+#10G 
+* Generated: 00:01:52:104
+* Sorted:    00:03:43:491
 
 #100G
-* Generate: 00:19:26:166
-* Sort: 	  00:54:42:304
+* Generated: 00:18:19:330
+* Sorted:    00:28:21:732
