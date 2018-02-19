@@ -55,11 +55,10 @@ namespace altium.test.file.generator
       {
         var random = new Random();
 
-        var rows = GenerateRows(random, maxNumber, values, 1000);
-        var len = rows.Length;
-
         while (fs.Position < size)
         {
+          var rows = GenerateRows(random, maxNumber, values, 1000);
+          var len = rows.Length;
           var leftSize = size - fs.Position;
           var count = leftSize < len ? leftSize : len;
           var bytes = Encoding.ASCII.GetBytes(rows, 0, (int)count);
