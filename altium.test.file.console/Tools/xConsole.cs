@@ -94,14 +94,17 @@ namespace altium.test.file.console
       }
     }
 
-    public static string ReadString()
+    public static string ReadString(string @default = null)
     {
       while (true)
       {
-        var str = Console.ReadLine().Trim();
+        var value = Console.ReadLine().Trim();
 
-        if (!string.IsNullOrWhiteSpace(str))
-          return str;
+        if (string.IsNullOrWhiteSpace(value) && @default != null)
+          value = @default;
+
+        if (!string.IsNullOrWhiteSpace(value))
+          return value;
       }
     }
 

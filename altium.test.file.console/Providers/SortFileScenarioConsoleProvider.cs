@@ -26,7 +26,9 @@ namespace altium.test.file.console.Providers
       xConsole.WriteQuestion("Enter target file path: ");
       settings.TargetFilePath = xConsole.ReadString();
 
-      settings.SortedFilePath = $"{settings.TargetFilePath}.sorted";
+      var defaultSortedFilePath = $"{settings.TargetFilePath}.sorted";
+      xConsole.WriteQuestion($"Enter sorted file path (default: {defaultSortedFilePath}): ");
+      settings.SortedFilePath = xConsole.ReadString(defaultSortedFilePath);
 
       var defaultBufferSize = Config.GetApplicationSetting<int>("DefaultBufferSize");
       xConsole.WriteQuestion($"Enter buffer size (default: {defaultBufferSize: #,###,###}): ");
