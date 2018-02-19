@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace altium.test.file.sorter
 {
@@ -53,30 +54,37 @@ namespace altium.test.file.sorter
       var totalSize = new FileInfo(targetFilePath).Length;
       long bytesRead = 0;
 
-      foreach (var line in File.ReadLines(targetFilePath).AsParallel())
-      {
-        bytesRead += line.Length;
-
-        if (_parseProgress != null)
-          _parseProgress.Report((int)(bytesRead * 100 / totalSize));
-
-        if (result.ContainsKey(line))
+      Parallel.ForEach(
+        File.ReadLines(targetFilePath),
+        line =>
         {
+          if (string.IsNullOrWhiteSpace(line))
+            return;
+
+          bytesRead += line.Length;
+
+          if (_parseProgress != null)
+            _parseProgress.Report((int)(bytesRead * 100 / totalSize));
+
+          if (result.ContainsKey(line))
+          {
+            result[line]++;
+            return;
+          }
+
+          if (result.TryAdd(line, 1))
+            return;
+
           result[line]++;
-          continue;
-        }
-
-        if (result.TryAdd(line, 1))
-          continue;
-
-        result[line]++;
-      }
-
+        });
+      
       if (_parseProgress != null)
         _parseProgress.Report(100);
 
       return result;
     }
+
+
 
     private IOrderedEnumerable<CompressedFileRow> Sort(ConcurrentDictionary<string, int> compressed)
     {
