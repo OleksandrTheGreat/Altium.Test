@@ -53,23 +53,21 @@ namespace altium.test.file.generator
       using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
       using (var bs = new BufferedStream(fs, bufferSize))
       {
-        long bytesWritten = 0;
         var random = new Random();
 
-        while (bytesWritten < size)
+        var rows = GenerateRows(random, maxNumber, values, 1000);
+        var len = rows.Length;
+
+        while (fs.Position < size)
         {
-          var rows = GenerateRows(random, maxNumber, values, 100);
-          var len = rows.Length;
-          var leftSize = size - bytesWritten;
+          var leftSize = size - fs.Position;
           var count = leftSize < len ? leftSize : len;
           var bytes = Encoding.ASCII.GetBytes(rows, 0, (int)count);
 
           bs.Write(bytes, 0, (int)count);
 
-          bytesWritten += count;
-
           if (_progress != null)
-            _progress.Report((int)(bytesWritten * 100 / size));
+            _progress.Report((int)(fs.Position * 100 / size));
         }
       }
     }
