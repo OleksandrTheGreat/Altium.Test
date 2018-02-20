@@ -41,7 +41,6 @@ namespace altium.test.file.sorter
       var sorted = Sort(compressed);
 
       Write(
-        targetFilePath,
         sortedFilePath,
         sorted, 
         bufferSize
@@ -118,7 +117,6 @@ namespace altium.test.file.sorter
     }
 
     private void Write(
-      string targetFilePath,
       string sortedFilePath,
       IOrderedEnumerable<CompressedFileRow> sorted,
       int bufferSize
