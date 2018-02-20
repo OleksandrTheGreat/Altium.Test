@@ -127,8 +127,6 @@ namespace altium.test.file.sorter
       using (var fs = new FileStream(sortedFilePath, FileMode.Create, FileAccess.Write))
       using (var bs = new BufferedStream(fs, bufferSize))
       {
-        fs.SetLength(new FileInfo(targetFilePath).Length);
-
         var rowsWritten = 0;
         var total = sorted.Count();
 

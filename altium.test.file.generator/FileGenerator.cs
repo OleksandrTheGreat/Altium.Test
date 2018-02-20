@@ -63,7 +63,7 @@ namespace altium.test.file.generator
           var count = leftSize < len ? leftSize : len;
           var bytes = Encoding.ASCII.GetBytes(rows, 0, (int)count);
 
-          bs.Write(bytes, 0, (int)count);
+          bs.WriteAsync(bytes, 0, (int)count);
 
           if (_progress != null)
             _progress.Report((int)(fs.Position * 100 / size));
