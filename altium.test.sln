@@ -2,25 +2,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.generator", "altium.test.file.generator\altium.test.file.generator.csproj", "{92047F9B-FB57-4123-83BC-A02D962E3431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Generator", "Altium.Test.generator\Altium.Test.Generator.csproj", "{92047F9B-FB57-4123-83BC-A02D962E3431}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.generator.tests", "altium.test.file.generator.tests\altium.test.file.generator.tests.csproj", "{1B020C14-9020-43AC-A9C8-584DC5DA2000}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Generator.Tests", "Altium.Test.generator.tests\Altium.Test.Generator.Tests.csproj", "{1B020C14-9020-43AC-A9C8-584DC5DA2000}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.sorter", "altium.test.file.sorter\altium.test.file.sorter.csproj", "{5B87051A-CE11-48A5-A55E-C954CFCD800B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Sorter", "Altium.Test.sorter\Altium.Test.Sorter.csproj", "{5B87051A-CE11-48A5-A55E-C954CFCD800B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.sorter.tests", "altium.test.file.sorter.tests\altium.test.file.sorter.tests.csproj", "{AEC7B9BF-E4FB-4C64-AAF3-C1EB619ECAB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Sorter.Tests", "Altium.Test.sorter.tests\Altium.Test.Sorter.Tests.csproj", "{AEC7B9BF-E4FB-4C64-AAF3-C1EB619ECAB3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.console", "altium.test.file.console\altium.test.file.console.csproj", "{CECA4E5D-93F0-405D-85CE-C113AC281A5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Console", "Altium.Test.console\Altium.Test.Console.csproj", "{CECA4E5D-93F0-405D-85CE-C113AC281A5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.scenarios", "altium.test.file.scenarios\altium.test.file.scenarios.csproj", "{BF528718-155A-4A78-A2AA-F8C64CE7E854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Scenarios", "Altium.Test.scenarios\Altium.Test.Scenarios.csproj", "{BF528718-155A-4A78-A2AA-F8C64CE7E854}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.generator.api", "altium.test.file.generator.api\altium.test.file.generator.api.csproj", "{6C6C4494-3DD1-40D0-98CB-534DB53F3961}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Generator.Api", "Altium.Test.generator.api\Altium.Test.Generator.Api.csproj", "{6C6C4494-3DD1-40D0-98CB-534DB53F3961}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.sorter.api", "altium.test.file.sorter.api\altium.test.file.sorter.api.csproj", "{E2262E82-944B-4B5C-90A6-71177BECA894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Sorter.Api", "Altium.Test.sorter.api\Altium.Test.Sorter.Api.csproj", "{E2262E82-944B-4B5C-90A6-71177BECA894}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "altium.test.file.scenarios.api", "altium.test.file.scenarios.api\altium.test.file.scenarios.api.csproj", "{DC144DDE-D0E2-4463-B561-3F8BC8F37454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Scenarios.Api", "Altium.Test.scenarios.api\Altium.Test.Scenarios.Api.csproj", "{DC144DDE-D0E2-4463-B561-3F8BC8F37454}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "altium.test.common", "altium.test.common\altium.test.common.csproj", "{DA1485D1-E0A2-4C29-9971-2C7557EA9C09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altium.Test.Common", "Altium.Test.common\Altium.Test.Common.csproj", "{DA1485D1-E0A2-4C29-9971-2C7557EA9C09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

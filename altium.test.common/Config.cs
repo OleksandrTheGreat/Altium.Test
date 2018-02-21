@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
-namespace altium.test
+namespace Altium.Test
 {
   public static class Config
   {

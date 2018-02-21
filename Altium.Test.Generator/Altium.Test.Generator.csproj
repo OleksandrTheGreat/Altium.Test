@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Altium.Test.common\Altium.Test.Common.csproj" />
+    <ProjectReference Include="..\Altium.Test.generator.api\Altium.Test.Generator.Api.csproj" />
+  </ItemGroup>
+
+</Project>
