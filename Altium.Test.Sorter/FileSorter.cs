@@ -19,6 +19,7 @@ namespace Altium.Test.Sorter
 
     private Stopwatch _Watch;
     private bool _Done;
+    private SortStatus _Status;
     private int _PassesMade;
     private int _BlocksSorted;
     private int _BlocksMerged;
@@ -80,6 +81,8 @@ namespace Altium.Test.Sorter
       _Watch = new Stopwatch();
       _Watch.Start();
 
+      _Status = SortStatus.StandBy;
+      _PassesMade = 0;
       _Done = false;
 
       ResetProgressMarkers();
@@ -98,6 +101,7 @@ namespace Altium.Test.Sorter
             RowsRed = _RowsRed,
             BlocksSorted = _BlocksSorted,
             BlocksMerged = _BlocksMerged,
+            Status = _Status,
             Elapsed = watch.Elapsed
           });
       }
@@ -165,9 +169,11 @@ namespace Altium.Test.Sorter
               Exception = ex
             });
 
+          _Status = SortStatus.Cleaning;
           _fileAdapter.CleanSortTrash(inputPath, outputPath);
 
           _Done = true;
+          _Status = SortStatus.StandBy;
         }
       });
     }
@@ -193,12 +199,16 @@ namespace Altium.Test.Sorter
         if (inputfileAdapter.GetFileInfo(inputPath).Length == 0)
         {
           if (_PassesMade > 0)
+          {
+            _Status = SortStatus.Cleaning;
             inputfileAdapter.Delete(inputPath);
+          }
 
           _Done = true;
           return;
         }
 
+        _Status = SortStatus.Cleaning;
         GC.Collect();
 
         inputfileAdapter.BeginRead(inputPath, bufferSize);
@@ -209,6 +219,8 @@ namespace Altium.Test.Sorter
           outputFileAdapter.StreamWriter.BaseStream.Length;
 
         var output = new GroupedItem<T>[0];
+
+        _Status = SortStatus.Reading;
 
         foreach (var block in inputfileAdapter.ReadBlock(blockSize))
         {
@@ -229,6 +241,8 @@ namespace Altium.Test.Sorter
             output,
             sorted
           );
+
+          _Status = SortStatus.Reading;
         }
 
         WriteUngrouped(outputFileAdapter, output);
@@ -238,7 +252,10 @@ namespace Altium.Test.Sorter
         outputFileAdapter.EndWrite();
 
         if (_PassesMade > 0)
+        {
+          _Status = SortStatus.Cleaning;
           inputfileAdapter.Delete(inputPath);
+        }
 
         _PassesMade++;
         ResetProgressMarkers();
@@ -277,6 +294,8 @@ namespace Altium.Test.Sorter
       IEnumerable<string> block
     )
     {
+      _Status = SortStatus.Grouping;
+
       return 
         block
         .AsParallel()
@@ -292,6 +311,8 @@ namespace Altium.Test.Sorter
 
     private GroupedItem<T>[] SortBlock(GroupedItem<T>[] block)
     {
+      _Status = SortStatus.Sorting;
+
       if (_sortStrategy.IsSorted(block))
         return block;
 
@@ -309,6 +330,8 @@ namespace Altium.Test.Sorter
       GroupedItem<T>[] right
     )
     {
+      _Status = SortStatus.Merging;
+
       if (left.Length == 0)
         return right;
 
@@ -350,6 +373,8 @@ namespace Altium.Test.Sorter
       GroupedItem<T>[] block
     )
     {
+      _Status = SortStatus.Writing;
+
       foreach (var item in block)
         fileAdapter.WriteLine(Serialize(item));
     }
@@ -359,6 +384,8 @@ namespace Altium.Test.Sorter
       GroupedItem<T>[] block
     )
     {
+      _Status = SortStatus.Writing;
+
       var unparsed = block
         .Select(x => new GroupedItem<string> { Count = x.Count, Item = _lineParser.Unparse(x.Item) });
 

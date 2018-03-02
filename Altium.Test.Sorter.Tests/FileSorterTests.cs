@@ -34,7 +34,7 @@ namespace Altium.Test.Sorter.Tests
     }
 
     [Theory]
-    [InlineData(FILE_PATH)]
+    [InlineData(@"D:\temp\1G.3.sorted")]
     public void Check_sorting(string path)
     {
       var unsorted = new List<string[]>();
@@ -74,7 +74,7 @@ namespace Altium.Test.Sorter.Tests
     }
 
     [Theory]
-    [InlineData(FILE_PATH)]
+    [InlineData(@"D:\temp\1G.1")]
     public void Check_for_brocken_line(string path)
     {
       var breaks = new List<string[]>();
@@ -94,17 +94,16 @@ namespace Altium.Test.Sorter.Tests
           var line = parser.Parse(data);
 
           if (line.String == null)
-            throw new Exception($"Found broken line in {path}");
+            throw new Exception($"Found broken line in {path}: {data}");
         }
       }
     }
 
     [Theory]
-    [InlineData(@"D:\temp\10G.u")]
+    [InlineData(@"D:\temp\1G.u")]
     public void Count_unique_lines(string path)
     {
-      var duplicates = new Dictionary<string, int>();
-      var lines = new List<string>();
+      var lines = new Dictionary<string, int>();
       var bufferSize = 65 * 1024 * 1024;
       long lineCounter = 0;
 
@@ -114,17 +113,13 @@ namespace Altium.Test.Sorter.Tests
       {
         while (!sr.EndOfStream)
         {
+          var line = sr.ReadLine();
           lineCounter++;
 
-          var line = sr.ReadLine();
-
-          if (!lines.Any(x => x == line))
-            lines.Add(line);
+          if (lines.ContainsKey(line))
+            lines[line]++;
           else
-            if (duplicates.ContainsKey(line))
-            duplicates[line]++;
-          else
-            duplicates.Add(line, 2);
+            lines.Add(line, 1);
         }
       }
     }

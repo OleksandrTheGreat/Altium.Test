@@ -15,10 +15,10 @@ namespace Altium.Test.Generator
     )
     {
       var lineSize = _line.Length;
-      var posibleTimes = totalSize / lineSize;
+      double posibleTimes = totalSize / lineSize;
       var requiredTimes = posibleTimes * percentOfAppearance / 100;
 
-      if (percentOfAppearance < 2)
+      if (requiredTimes < 1)
         return GenerateLineUnique();
 
       if (_timesHit > requiredTimes)

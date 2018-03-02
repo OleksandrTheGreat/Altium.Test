@@ -98,7 +98,7 @@ namespace Altium.Test.Providers
       var defaultBufferSize = Config.GetApplicationSetting<int>("DefaultBufferSize");
       settings.BufferSize = defaultBufferSize;
 
-      settings.PercentOfAppearance = 1;
+      settings.PercentOfAppearance = 0;
 
       return Task.FromResult(settings);
     }

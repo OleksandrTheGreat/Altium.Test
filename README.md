@@ -51,19 +51,21 @@ Follow the instructions to perform Generate or Sort operations.
 - 00:00:01:304 (8% of repeating lines)
 - 00:00:04:615 (all unique lines)
 * Sort:
-- 00:00:32:047 (one repeating line)
-- 00:01:57:946 (8% of repeating lines)
-- 00:01:38:398 (all unique lines)
+- 00:00:16:276 (one repeating line)
+- 00:00:15:604 (3% of repeating lines)
+- 00:00:17:516 (8% of repeating lines)
+- 00:01:59:304 (all unique lines)
 
 # 10G 
 * Generate: 
-- 00:00:54:777 (one repeating line)
-- 00:00:50:356 (8% of repeating lines)
-- 00:00:57:107 (all unique lines)
+- 00:00:56:854 (one repeating line)
+- 00:00:55:338 (3% of repeating lines)
+- 00:00:50:459 (8% of repeating lines)
+- 00:00:54:922 (all unique lines)
 * Sort:
-- 00:03:14:760 (one repeating line)
-- 00:03:14:703 (8% of repeating lines)
-- 00:03:11:657 (3% of repeating lines)
+- 00:03:39:026 (one repeating line)
+-  (3% of repeating lines)
+-  (8% of repeating lines)
 - 01:30:49:812 (all unique lines)
 
 # 100G
@@ -73,5 +75,5 @@ Follow the instructions to perform Generate or Sort operations.
 -  (all unique lines)
 * Sort:
 - 00:40:52:831 (one repeating line)
--  (8% of repeating lines)
+-  (3% of repeating lines)
 -  (all unique lines)
