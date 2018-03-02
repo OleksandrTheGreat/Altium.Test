@@ -75,5 +75,5 @@ Follow the instructions to perform Generate or Sort operations.
 - 00:12:28:792 (all unique lines)
 * Sort:
 - 00:40:52:831 (one repeating line)
--  (3% of repeating lines)
+- 00:40:10:957 (3% of repeating lines)
 -  (all unique lines)
