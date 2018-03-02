@@ -45,7 +45,7 @@ Follow the instructions to perform Generate or Sort operations.
 
 ## Some of test results
 
-#1G
+# 1G
 * Generate: 
 - 00:00:01:762 (one repeating line)
 - 00:00:01:304 (8% of repeating lines)
@@ -55,7 +55,7 @@ Follow the instructions to perform Generate or Sort operations.
 - 00:01:57:946 (8% of repeating lines)
 - 00:01:38:398 (all unique lines)
 
-#10G 
+# 10G 
 * Generate: 
 - 00:00:54:777 (one repeating line)
 - 00:00:50:356 (8% of repeating lines)
@@ -66,7 +66,7 @@ Follow the instructions to perform Generate or Sort operations.
 - 00:03:11:657 (3% of repeating lines)
 - (all unique lines)
 
-#100G
+# 100G
 * Generate: 
 - 00:11:56:760 (one repeating line)
 -  (8% of repeating lines)
