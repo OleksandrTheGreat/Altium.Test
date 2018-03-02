@@ -43,23 +43,27 @@ Follow the instructions to perform Generate or Sort operations.
 
 ## Some of test results
 
-##NEW 
 #1G
-* Generate: 00:00:01:762 (one repeating line)
-			00:00:01:304 (8% of repeating lines)
-			00:00:04:615 (all unique lines)			
-* Sort:     00:00:32:047 (one repeating line)
-			00:01:57:946 (8% of repeating lines)
-			00:01:38:398 (all unique lines)
+
+* Generate: 
+- 00:00:01:762 (one repeating line)
+- 00:00:01:304 (8% of repeating lines)
+- 00:00:04:615 (all unique lines)
+* Sort:
+- 00:00:32:047 (one repeating line)
+- 00:01:57:946 (8% of repeating lines)
+- 00:01:38:398 (all unique lines)
 
 #10G 
-* Generate: 00:00:57:338 (one repeating line)
-			00:00:50:356 (8% of repeating lines)
-			 (all unique lines)
-* Sort:     00:03:14:760 (one repeating line)
-			00:03:14:703 (8% of repeating lines)
-			 (all unique lines)
+* Generate: 
+- 00:00:57:338 (one repeating line)
+- 00:00:50:356 (8% of repeating lines)
+- (all unique lines)
+* Sort:
+- 00:03:14:760 (one repeating line)
+- 00:03:14:703 (8% of repeating lines)
+- (all unique lines)
 
 #100G
-* Generate:  (all unique lines )
+* Generate:
 * Sort: 
