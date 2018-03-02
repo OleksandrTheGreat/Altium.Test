@@ -26,5 +26,6 @@ namespace Altium.Test.Api
     void EndWrite();
 
     void Delete(string path);
+    void CleanSortTrash(string inputPath, string outputPath);
   }
 }

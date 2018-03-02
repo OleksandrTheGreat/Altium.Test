@@ -11,7 +11,7 @@ namespace Altium.Test
     {
       if (progress.Exception != null)
       {
-        Console.WriteLine(progress.Exception);
+        xConsole.WriteError(progress.Exception.Message);
         return;
       }
 

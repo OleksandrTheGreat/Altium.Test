@@ -69,7 +69,7 @@ Follow the instructions to perform Generate or Sort operations.
 # 100G
 * Generate: 
 - 00:11:56:760 (one repeating line)
--  (8% of repeating lines)
+- 00:12:05:687 (3% of repeating lines)
 -  (all unique lines)
 * Sort:
 - 00:40:52:831 (one repeating line)

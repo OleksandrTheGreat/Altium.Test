@@ -165,6 +165,8 @@ namespace Altium.Test.Sorter
               Exception = ex
             });
 
+          _fileAdapter.CleanSortTrash(inputPath, outputPath);
+
           _Done = true;
         }
       });

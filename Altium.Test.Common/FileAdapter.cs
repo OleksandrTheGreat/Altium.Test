@@ -128,6 +128,19 @@ namespace Altium.Test
       File.Delete(path);
     }
 
+    public void CleanSortTrash(
+      string inputPath,
+      string outputPath
+    )
+    {
+      var files = Directory
+        .GetFiles(Path.GetDirectoryName(inputPath))
+        .Where(x => x.StartsWith(inputPath) && x != inputPath && x != outputPath);
+
+      foreach (var file in files)
+        File.Delete(file);
+    }
+
     ~FileAdapter()
     {
       EndRead();
