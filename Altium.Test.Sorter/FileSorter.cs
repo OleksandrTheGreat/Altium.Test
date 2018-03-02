@@ -81,10 +81,8 @@ namespace Altium.Test.Sorter
       _Watch.Start();
 
       _Done = false;
-      _PassesMade = 0;
-      _BlocksSorted = 0;
-      _BlocksMerged = 0;
-      _RowsRed = 0;
+
+      ResetProgressMarkers();
     }
 
     private void Wait(Stopwatch watch)
@@ -149,13 +147,22 @@ namespace Altium.Test.Sorter
     {
       Task.Factory.StartNew(() =>
       {
-        SortFile(
-          sourcepath,
-          inputPath,
-          outputPath,
-          bufferSize,
-          blockSize
-        );
+        try
+        {
+          SortFile(
+            sourcepath,
+            inputPath,
+            outputPath,
+            bufferSize,
+            blockSize
+          );
+        }
+        catch(Exception ex)
+        {
+          Console.WriteLine(ex);
+
+          _Done = true;
+        }
       });
     }
 
@@ -190,7 +197,7 @@ namespace Altium.Test.Sorter
         bufferFileAdapter.BeginWrite(bufferPath, bufferSize);
         outputFileAdapter.BeginWrite(outputPath, bufferSize);
 
-        outputFileAdapter.StreamWriter.BaseStream.Position = 
+        outputFileAdapter.StreamWriter.BaseStream.Position =
           outputFileAdapter.StreamWriter.BaseStream.Length;
 
         var output = new GroupedItem<T>[0];
@@ -209,9 +216,9 @@ namespace Altium.Test.Sorter
           var sorted = SortBlock(grouped);
 
           output = MergeBlocks(
-            bufferFileAdapter, 
-            blockSize, 
-            output, 
+            bufferFileAdapter,
+            blockSize,
+            output,
             sorted
           );
         }
@@ -226,7 +233,7 @@ namespace Altium.Test.Sorter
           inputfileAdapter.Delete(inputPath);
 
         _PassesMade++;
-        _RowsRed = 0;
+        ResetProgressMarkers();
 
         SortFile(
           sourcepath,
@@ -242,6 +249,13 @@ namespace Altium.Test.Sorter
         bufferFileAdapter.EndWrite();
         outputFileAdapter.EndWrite();
       }
+    }
+
+    private void ResetProgressMarkers()
+    {
+      _BlocksSorted = 0;
+      _BlocksMerged = 0;
+      _RowsRed = 0;
     }
 
     private GroupedItem<T>[] Deserialize(

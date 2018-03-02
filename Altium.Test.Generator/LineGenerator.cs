@@ -38,6 +38,7 @@ namespace Altium.Test.Generator
       return $"{String.GetHashCode()}. {String}{Environment.NewLine}";
     }
 
+    //TODO: duplicates on big volumes 
     private string GenerateLineUnique()
     {
       var String = Guid.NewGuid();
