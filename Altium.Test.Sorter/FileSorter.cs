@@ -197,6 +197,8 @@ namespace Altium.Test.Sorter
           return;
         }
 
+        GC.Collect();
+
         inputfileAdapter.BeginRead(inputPath, bufferSize);
         bufferFileAdapter.BeginWrite(bufferPath, bufferSize);
         outputFileAdapter.BeginWrite(outputPath, bufferSize);
@@ -239,9 +241,7 @@ namespace Altium.Test.Sorter
         _PassesMade++;
         ResetProgressMarkers();
 
-        GC.Collect();
-
-        SortFile(
+        RunFileSortTask(
           sourcepath,
           bufferPath,
           outputPath,
