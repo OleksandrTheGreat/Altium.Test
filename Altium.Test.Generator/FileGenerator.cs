@@ -9,6 +9,7 @@ namespace Altium.Test.Generator
   public class FileGenerator : IFileGenerator
   {
     private readonly IFileAdapter _fileAdapter;
+    private readonly IFileWriter _fileWriter;
     private readonly ILineGenerator _lineGenerator;
     private static IProgress<int?> _progress;
 
@@ -18,11 +19,13 @@ namespace Altium.Test.Generator
 
     public FileGenerator(
       IFileAdapter fileAdapter,
+      IFileWriter fileWriter,
       ILineGenerator lineGenerator,
       IProgress<int?> progress
     )
     {
       _fileAdapter = fileAdapter;
+      _fileWriter = fileWriter;
       _lineGenerator = lineGenerator;
       _progress = progress;
     }
@@ -49,15 +52,15 @@ namespace Altium.Test.Generator
       try
       {
         _fileAdapter.Delete(path);
-        _fileAdapter.BeginWrite(path, bufferSize);
+        _fileWriter.BeginWrite(path, bufferSize);
 
         Parallel.For(0, workers, w => GenerateLines(w, bufferSize, size, percentOfAppearance));
 
-        _fileAdapter.SetLength(size);
+        _fileWriter.SetLength(size);
       }
       finally
       {
-        _fileAdapter.EndWrite();
+        _fileWriter.EndWrite();
       }
     }
 
@@ -99,7 +102,7 @@ namespace Altium.Test.Generator
             lock (FILE)
             {
               ms.Position = 0;
-              _fileAdapter.CopyFrom(ms);
+              _fileWriter.CopyFrom(ms);
             }
 
             _bytesWritten += ms.Length;

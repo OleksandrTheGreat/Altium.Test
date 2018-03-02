@@ -15,6 +15,8 @@ namespace Altium.Test.Sorter
     private readonly ISortStrategy<GroupedItem<T>> _sortStrategy;
     private readonly IComparer<GroupedItem<T>> _comparer;
     private readonly IFileAdapter _fileAdapter;
+    private readonly IFileReader _filereader;
+    private readonly IFileWriter _fileWriter;
     private readonly IProgress<SortProgress> _progress;
 
     private Stopwatch _Watch;
@@ -30,6 +32,8 @@ namespace Altium.Test.Sorter
       ISortStrategy<GroupedItem<T>> sortStrategy,
       IComparer<GroupedItem<T>> comparer,
       IFileAdapter fileAdapter,
+      IFileReader filereader,
+      IFileWriter fileWriter,
       IProgress<SortProgress> progress = null
     )
     {
@@ -37,6 +41,8 @@ namespace Altium.Test.Sorter
       _sortStrategy = sortStrategy;
       _comparer = comparer;
       _fileAdapter = fileAdapter;
+      _filereader = filereader;
+      _fileWriter = fileWriter;
       _progress = progress;
     }
 
@@ -127,17 +133,17 @@ namespace Altium.Test.Sorter
     {
       try
       {
-        _fileAdapter.BeginRead(inputPath, 1024);
+        _filereader.BeginRead(inputPath, 1024);
 
         var linesNumber = 1000;
-        var lines = _fileAdapter.ReadLines(linesNumber).ToArray();
+        var lines = _filereader.ReadLines(linesNumber).ToArray();
         var averageLineSize = lines.Sum(x => x.Length + Environment.NewLine.Length) / lines.Count();
 
         return (int)(blockSize / averageLineSize);
       }
       finally
       {
-        _fileAdapter.EndRead();
+        _filereader.EndRead();
       }
     }
 
@@ -190,18 +196,18 @@ namespace Altium.Test.Sorter
 
       _fileAdapter.Delete(bufferPath);
 
-      var inputfileAdapter = _fileAdapter.CreateInstance();
-      var bufferFileAdapter = _fileAdapter.CreateInstance();
-      var outputFileAdapter = _fileAdapter.CreateInstance();
+      var inputfileFileReader = _filereader.CreateInstance();
+      var bufferFileWriter = _fileWriter.CreateInstance();
+      var outputFileWriter = _fileWriter.CreateInstance();
 
       try
       {
-        if (inputfileAdapter.GetFileInfo(inputPath).Length == 0)
+        if (_fileAdapter.GetFileInfo(inputPath).Length == 0)
         {
           if (_PassesMade > 0)
           {
             _Status = SortStatus.Cleaning;
-            inputfileAdapter.Delete(inputPath);
+            _fileAdapter.Delete(inputPath);
           }
 
           _Done = true;
@@ -211,18 +217,18 @@ namespace Altium.Test.Sorter
         _Status = SortStatus.Cleaning;
         GC.Collect();
 
-        inputfileAdapter.BeginRead(inputPath, bufferSize);
-        bufferFileAdapter.BeginWrite(bufferPath, bufferSize);
-        outputFileAdapter.BeginWrite(outputPath, bufferSize);
+        inputfileFileReader.BeginRead(inputPath, bufferSize);
+        bufferFileWriter.BeginWrite(bufferPath, bufferSize);
+        outputFileWriter.BeginWrite(outputPath, bufferSize);
 
-        outputFileAdapter.StreamWriter.BaseStream.Position =
-          outputFileAdapter.StreamWriter.BaseStream.Length;
+        outputFileWriter.StreamWriter.BaseStream.Position =
+          outputFileWriter.StreamWriter.BaseStream.Length;
 
         var output = new GroupedItem<T>[0];
 
         _Status = SortStatus.Reading;
 
-        foreach (var block in inputfileAdapter.ReadBlock(blockSize))
+        foreach (var block in inputfileFileReader.ReadBlock(blockSize))
         {
           _RowsRed += block.Count();
 
@@ -236,7 +242,7 @@ namespace Altium.Test.Sorter
           var sorted = SortBlock(grouped);
 
           output = MergeBlocks(
-            bufferFileAdapter,
+            bufferFileWriter,
             blockSize,
             output,
             sorted
@@ -245,16 +251,16 @@ namespace Altium.Test.Sorter
           _Status = SortStatus.Reading;
         }
 
-        WriteUngrouped(outputFileAdapter, output);
+        WriteUngrouped(outputFileWriter, output);
 
-        inputfileAdapter.EndRead();
-        bufferFileAdapter.EndWrite();
-        outputFileAdapter.EndWrite();
+        inputfileFileReader.EndRead();
+        bufferFileWriter.EndWrite();
+        outputFileWriter.EndWrite();
 
         if (_PassesMade > 0)
         {
           _Status = SortStatus.Cleaning;
-          inputfileAdapter.Delete(inputPath);
+          _fileAdapter.Delete(inputPath);
         }
 
         _PassesMade++;
@@ -270,9 +276,9 @@ namespace Altium.Test.Sorter
       }
       finally
       {
-        inputfileAdapter.EndRead();
-        bufferFileAdapter.EndWrite();
-        outputFileAdapter.EndWrite();
+        inputfileFileReader.EndRead();
+        bufferFileWriter.EndWrite();
+        outputFileWriter.EndWrite();
       }
     }
 
@@ -324,7 +330,7 @@ namespace Altium.Test.Sorter
     }
 
     private GroupedItem<T>[] MergeBlocks(
-      IFileAdapter bufferFileAdapter,
+      IFileWriter fileWriter,
       int blockSize,
       GroupedItem<T>[] left,
       GroupedItem<T>[] right
@@ -345,14 +351,14 @@ namespace Altium.Test.Sorter
       {
         if (_comparer.Compare(left[left.Length - 1], right[0]) <= 0)
         {
-          Write(bufferFileAdapter, right);
+          Write(fileWriter, right);
 
           _BlocksMerged += 2;
 
           return left;
         }
 
-        Write(bufferFileAdapter, left);
+        Write(fileWriter, left);
 
         _BlocksMerged += 2;
 
@@ -363,24 +369,24 @@ namespace Altium.Test.Sorter
 
       _BlocksMerged += 2;
 
-      Write(bufferFileAdapter, left.Skip(blockSize).ToArray());
+      Write(fileWriter, left.Skip(blockSize).ToArray());
 
       return left.Take(blockSize).ToArray();
     }
 
     private void Write(
-      IFileAdapter fileAdapter,
+      IFileWriter fileWriter,
       GroupedItem<T>[] block
     )
     {
       _Status = SortStatus.Writing;
 
       foreach (var item in block)
-        fileAdapter.WriteLine(Serialize(item));
+        fileWriter.WriteLine(Serialize(item));
     }
 
     private void WriteUngrouped(
-      IFileAdapter fileAdapter, 
+      IFileWriter fileWriter, 
       GroupedItem<T>[] block
     )
     {
@@ -391,7 +397,7 @@ namespace Altium.Test.Sorter
 
       foreach (var item in unparsed)
         for (var i = 0; i < item.Count; i++)
-          fileAdapter.WriteLine(item.Item);
+          fileWriter.WriteLine(item.Item);
     }
 
     private const string GROUP_SEPARATOR = "·";

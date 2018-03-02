@@ -62,6 +62,7 @@ namespace Altium.Test
           new GenerateFileScenarioConsoleProvider(),
           new FileGenerator(
             new FileAdapter(),
+            new FileWriter(),
             new LineGenerator(),
             new ConsolePercentageProgress("Generated: ")))
       },
@@ -80,6 +81,8 @@ namespace Altium.Test
             //),
             new TestLineComparer(),
             new FileAdapter(),
+            new FileReader(),
+            new FileWriter(),
             new ConsoleSortProgress()))
       }
     };

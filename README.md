@@ -1,6 +1,6 @@
 ## Description
 <br/> Implementation of a test task for Altium Co.
-<br/>Task: sort "[number]. [string]" lines in 100GB file.
+<br/>Task: sort "[number]. [string]" lines in 100GB file first by [string] then by [number].
  
 * Used IDE: Visual Studio 2017
 * Language: C# for .Net
@@ -33,10 +33,10 @@ Build the solution and run ../Altium.Test.Console/bin/Debug/netcoreapp2.0/win10-
 Follow the instructions to perform Generate or Sort operations.
 
 ## Sort routine algorithm
-0) Read target file block of line to memory buffer
+0) Read target file block of lines to memory buffer
 1) Group lines
-2) Sort grouped lines
-3) Merge sorted grouped lines with lines in memory buffer
+2) Sort grouped lines first by [string] then by [number]
+3) Merge sorted lines with lines in memory buffer
 4) If memory buffer contains more lines then a block size, then drop the overhead to a buffer file
 5) If reached end of target file then write lines from memory buffer to output file else goto [0]
 6) If buffer file is not empty set target to buffer file and goto [0] else delete buffer file
@@ -64,15 +64,15 @@ Follow the instructions to perform Generate or Sort operations.
 - 00:00:54:922 (all unique lines)
 * Sort:
 - 00:03:39:026 (one repeating line)
--  (3% of repeating lines)
--  (8% of repeating lines)
+- 00:03:38:186 (3% of repeating lines)
+- 00:03:39:944 (8% of repeating lines)
 - 01:30:49:812 (all unique lines)
 
 # 100G
 * Generate: 
 - 00:11:56:760 (one repeating line)
-- 00:12:05:687 (3% of repeating lines)
--  (all unique lines)
+- 00:11:58:473 (3% of repeating lines)
+- 00:12:28:792 (all unique lines)
 * Sort:
 - 00:40:52:831 (one repeating line)
 -  (3% of repeating lines)

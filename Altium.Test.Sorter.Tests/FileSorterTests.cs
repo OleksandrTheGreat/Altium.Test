@@ -20,12 +20,14 @@ namespace Altium.Test.Sorter.Tests
       var bufferSize = 65 * 1024 * 1024;
 
       var sorter = new FileSorter<TestLine>(
-          new TestLineParser(),
-          new LinqSortStrategy(
-            new TestLineComparer()
-          ),
-          new TestLineComparer(),
-          new FileAdapter());
+        new TestLineParser(),
+        new LinqSortStrategy(
+          new TestLineComparer()
+        ),
+        new TestLineComparer(),
+        new FileAdapter(),
+        new FileReader(),
+        new FileWriter());
 
       sorter.Sort(inputPath, outputPath, bufferSize, bufferSize);
 
