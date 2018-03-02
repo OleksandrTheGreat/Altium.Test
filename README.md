@@ -63,7 +63,7 @@ Follow the instructions to perform Generate or Sort operations.
 * Sort:
 - 00:03:14:760 (one repeating line)
 - 00:03:14:703 (8% of repeating lines)
-- 00:02:55:567 (3% of repeating lines)
+- 00:03:11:657 (3% of repeating lines)
 - (all unique lines)
 
 #100G
