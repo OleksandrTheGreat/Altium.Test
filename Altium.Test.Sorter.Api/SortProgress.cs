@@ -9,5 +9,6 @@ namespace Altium.Test.Sorter.Api
     public int BlocksSorted { get; set; }
     public int BlocksMerged { get; set; }
     public TimeSpan Elapsed { get; set; }
+    public Exception Exception { get; set; }
   }
 }

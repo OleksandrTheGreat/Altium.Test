@@ -159,7 +159,11 @@ namespace Altium.Test.Sorter
         }
         catch(Exception ex)
         {
-          Console.WriteLine(ex);
+          _progress.Report(
+            new SortProgress
+            {
+              Exception = ex
+            });
 
           _Done = true;
         }
@@ -234,6 +238,8 @@ namespace Altium.Test.Sorter
 
         _PassesMade++;
         ResetProgressMarkers();
+
+        GC.Collect();
 
         SortFile(
           sourcepath,

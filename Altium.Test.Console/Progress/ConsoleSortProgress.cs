@@ -9,6 +9,12 @@ namespace Altium.Test
 
     public void Report(SortProgress progress)
     {
+      if (progress.Exception != null)
+      {
+        Console.WriteLine(progress.Exception);
+        return;
+      }
+
       if (_passesMade != progress.PassesMade)
       {
         Console.WriteLine();

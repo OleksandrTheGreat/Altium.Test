@@ -1,5 +1,6 @@
 ## Description
-Implementation of a test task for Altium.
+<br/> Implementation of a test task for Altium Co.
+<br/>Task: sort "[number]. [string]" lines in 100GB file.
  
 * Used IDE: Visual Studio 2017
 * Language: C# for .Net
