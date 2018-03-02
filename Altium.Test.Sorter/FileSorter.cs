@@ -25,7 +25,7 @@ namespace Altium.Test.Sorter
     private int _PassesMade;
     private int _BlocksSorted;
     private int _BlocksMerged;
-    private int _RowsRed;
+    private long _RowsRed;
 
     public FileSorter(
       ILineParser<T> lineParser,
