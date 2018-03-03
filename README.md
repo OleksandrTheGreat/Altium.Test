@@ -59,13 +59,13 @@ Follow the instructions to perform Generate or Sort operations.
 # 10G 
 * Generate: 
 - 00:00:56:854 (one repeating line)
-- 00:00:55:338 (3% of repeating lines)
-- 00:00:50:459 (8% of repeating lines)
+- 00:00:53:100 (3% of repeating lines)
+- 00:00:55:315 (8% of repeating lines)
 - 00:00:54:922 (all unique lines)
 * Sort:
 - 00:03:39:026 (one repeating line)
-- 00:03:38:186 (3% of repeating lines)
-- 00:03:39:944 (8% of repeating lines)
+- 00:03:15:246 (3% of repeating lines)
+- 00:03:19:713 (8% of repeating lines)
 - 01:30:49:812 (all unique lines)
 
 # 100G

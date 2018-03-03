@@ -82,6 +82,7 @@ namespace Altium.Test
             new TestLineComparer(),
             new FileAdapter(),
             new FileReader(),
+            //new MemoryMappedFileReader(),
             new FileWriter(),
             new ConsoleSortProgress()))
       }

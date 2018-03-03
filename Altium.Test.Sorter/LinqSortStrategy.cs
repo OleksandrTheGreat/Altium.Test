@@ -10,7 +10,7 @@ namespace Altium.Test.Sorter
     {
     }
 
-    public GroupedItem<TestLine>[] Sort(IEnumerable<GroupedItem<TestLine>> target)
+    public override GroupedItem<TestLine>[] Sort(IEnumerable<GroupedItem<TestLine>> target)
     {
       return 
         target

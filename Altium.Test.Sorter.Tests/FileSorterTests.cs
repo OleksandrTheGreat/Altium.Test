@@ -102,7 +102,7 @@ namespace Altium.Test.Sorter.Tests
     }
 
     [Theory]
-    [InlineData(@"D:\temp\1G.u")]
+    [InlineData(@"D:\temp\100G.3")]
     public void Count_unique_lines(string path)
     {
       var lines = new Dictionary<string, int>();

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Altium.Test.Sorter.Api;
+using System.Collections.Generic;
 
 namespace Altium.Test.Sorter
 {
-  public abstract class ASortStrategy<T>
+  public abstract class ASortStrategy<T>: ISortStrategy<T>
   {
     protected readonly IComparer<T> _comparer;
 
@@ -56,5 +57,7 @@ namespace Altium.Test.Sorter
 
       return merge;
     }
+
+    public abstract T[] Sort(IEnumerable<T> target);
   }
 }

@@ -15,7 +15,7 @@ namespace Altium.Test.Sorter
     private readonly ISortStrategy<GroupedItem<T>> _sortStrategy;
     private readonly IComparer<GroupedItem<T>> _comparer;
     private readonly IFileAdapter _fileAdapter;
-    private readonly IFileReader _filereader;
+    private readonly IFileReader _fileReader;
     private readonly IFileWriter _fileWriter;
     private readonly IProgress<SortProgress> _progress;
 
@@ -26,6 +26,7 @@ namespace Altium.Test.Sorter
     private int _BlocksSorted;
     private int _BlocksMerged;
     private long _RowsRed;
+    private int _RedPercent;
 
     public FileSorter(
       ILineParser<T> lineParser,
@@ -41,7 +42,7 @@ namespace Altium.Test.Sorter
       _sortStrategy = sortStrategy;
       _comparer = comparer;
       _fileAdapter = fileAdapter;
-      _filereader = filereader;
+      _fileReader = filereader;
       _fileWriter = fileWriter;
       _progress = progress;
     }
@@ -55,11 +56,15 @@ namespace Altium.Test.Sorter
     {
       try
       {
-        Init(outputPath);
+        Init(
+          inputPath,
+          outputPath
+        );
 
         AnalyzeFile(
           inputPath,
-          outputPath
+          outputPath,
+          bufferSize
         );
 
         RunFileSortTask(
@@ -70,7 +75,7 @@ namespace Altium.Test.Sorter
           CalculateBlockSize(inputPath, blockSize)
         );
 
-        Wait(_Watch);
+        Wait();
       }
       finally
       {
@@ -79,10 +84,11 @@ namespace Altium.Test.Sorter
     }
 
     private void Init(
+      string inputPath,
       string outputPath
     )
     {
-      _fileAdapter.Delete(outputPath);
+      _fileAdapter.CleanSortTrash(inputPath, outputPath);
 
       _Watch = new Stopwatch();
       _Watch.Start();
@@ -94,7 +100,15 @@ namespace Altium.Test.Sorter
       ResetProgressMarkers();
     }
 
-    private void Wait(Stopwatch watch)
+    private void ResetProgressMarkers()
+    {
+      _BlocksSorted = 0;
+      _BlocksMerged = 0;
+      _RowsRed = 0;
+      _RedPercent = 0;
+    }
+
+    private void Wait()
     {
       while (!_Done)
       {
@@ -105,17 +119,19 @@ namespace Altium.Test.Sorter
           {
             PassesMade = _PassesMade,
             RowsRed = _RowsRed,
+            RedPercent = _RedPercent,
             BlocksSorted = _BlocksSorted,
             BlocksMerged = _BlocksMerged,
             Status = _Status,
-            Elapsed = watch.Elapsed
+            Elapsed = _Watch.Elapsed
           });
       }
     }
 
     private void AnalyzeFile(
       string inputPath,
-      string outputPath
+      string outputPath,
+      int bufferSize
     )
     {
       var input = _fileAdapter.GetFileInfo(inputPath);
@@ -133,17 +149,17 @@ namespace Altium.Test.Sorter
     {
       try
       {
-        _filereader.BeginRead(inputPath, 1024);
+        _fileReader.BeginRead(inputPath, 1024);
 
         var linesNumber = 1000;
-        var lines = _filereader.ReadLines(linesNumber).ToArray();
+        var lines = _fileReader.ReadLines(linesNumber).ToArray();
         var averageLineSize = lines.Sum(x => x.Length + Environment.NewLine.Length) / lines.Count();
 
-        return (int)(blockSize / averageLineSize);
+        return (int)(blockSize / averageLineSize) + 1;
       }
       finally
       {
-        _filereader.EndRead();
+        _fileReader.EndRead();
       }
     }
 
@@ -196,7 +212,7 @@ namespace Altium.Test.Sorter
 
       _fileAdapter.Delete(bufferPath);
 
-      var inputfileFileReader = _filereader.CreateInstance();
+      var inputfileFileReader = _fileReader.CreateInstance();
       var bufferFileWriter = _fileWriter.CreateInstance();
       var outputFileWriter = _fileWriter.CreateInstance();
 
@@ -225,19 +241,24 @@ namespace Altium.Test.Sorter
           outputFileWriter.StreamWriter.BaseStream.Length;
 
         var output = new GroupedItem<T>[0];
+        long readLength = 0;
+        long totalLength = inputfileFileReader.StreamReader.BaseStream.Length;
 
         _Status = SortStatus.Reading;
 
         foreach (var block in inputfileFileReader.ReadBlock(blockSize))
         {
+          readLength += block.Sum(x => x.Length + Environment.NewLine.Length);
           _RowsRed += block.Count();
+          _RedPercent = (int)(readLength / (double)totalLength * 100);
 
           var grouped = new GroupedItem<T>[0];
+          var sanitized = block.Select(x => Sanitize(x));
 
           if (_PassesMade == 0)
-            grouped = Group(block);
+            grouped = Group(sanitized);
           else
-            grouped = Deserialize(block);
+            grouped = Deserialize(sanitized);
 
           var sorted = SortBlock(grouped);
 
@@ -282,18 +303,11 @@ namespace Altium.Test.Sorter
       }
     }
 
-    private void ResetProgressMarkers()
-    {
-      _BlocksSorted = 0;
-      _BlocksMerged = 0;
-      _RowsRed = 0;
-    }
-
     private GroupedItem<T>[] Deserialize(
       IEnumerable<string> block
     )
     {
-      return block.Select(x => Deserialize(x)).ToArray();
+      return block.Select(x => Deserialize(x)).Where(x => x != null).ToArray();
     }
 
     private GroupedItem<T>[] Group(
@@ -302,11 +316,11 @@ namespace Altium.Test.Sorter
     {
       _Status = SortStatus.Grouping;
 
-      return 
+      return
         block
         .AsParallel()
         .GroupBy(x => x)
-        .Select(g => 
+        .Select(g =>
           new GroupedItem<T>
           {
             Count = g.Count(),
@@ -409,14 +423,28 @@ namespace Altium.Test.Sorter
 
     private GroupedItem<T> Deserialize(string line)
     {
-      var parts = line.Split(GROUP_SEPARATOR);
+      try
+      {
+        var parts = line.Split(GROUP_SEPARATOR);
 
-      return
-        new GroupedItem<T>
-        {
-          Count = int.Parse(parts[0]),
-          Item = _lineParser.Parse(parts[1])
-        };
+        return
+          new GroupedItem<T>
+          {
+            Count = int.Parse(parts[0]),
+            Item = _lineParser.Parse(parts[1])
+          };
+      }
+      catch(Exception ex)
+      {
+        //TODO: error with long line full of "\0" produced by MemoryMappedFile
+      }
+
+      return null;
+    }
+
+    private static string Sanitize(string data)
+    {
+      return data.Replace("\0", "");
     }
   }
 }

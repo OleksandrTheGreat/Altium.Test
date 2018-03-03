@@ -10,7 +10,7 @@ namespace Altium.Test.Sorter
     {
     }
 
-    public T[] Sort(IEnumerable<T> target)
+    public override T[] Sort(IEnumerable<T> target)
     {
       return Sort(target.ToArray());
     }
