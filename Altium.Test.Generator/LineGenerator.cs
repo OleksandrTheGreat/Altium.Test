@@ -5,6 +5,7 @@ namespace Altium.Test.Generator
 {
   public class LineGenerator : ILineGenerator
   {
+    private static string _string = GenerateString();
     private static string _line = GenerateLine();
 
     private int _timesHit = 0;
@@ -14,35 +15,49 @@ namespace Altium.Test.Generator
       long totalSize
     )
     {
-      var lineSize = _line.Length;
-      double posibleTimes = totalSize / lineSize;
-      var requiredTimes = posibleTimes * percentOfAppearance / 100;
+      double requiredTimes = CalculateTimes(percentOfAppearance, totalSize);
 
       if (requiredTimes < 1)
-        return GenerateLineUnique();
+      {
+        _string = GenerateString();
+
+        return GenerateLine();
+      }
 
       if (_timesHit > requiredTimes)
       {
-        _line = GenerateLine();
+        _string = GenerateString();
         _timesHit = 0;
       }
 
       _timesHit++;
 
-      return _line;
+      return GenerateLine();
+    }
+
+    private static double CalculateTimes(int percentOfAppearance, long totalSize)
+    {
+      var size = _string.Length;
+      double posibleTimes = totalSize / size;
+     
+      return posibleTimes * percentOfAppearance / 100;
+    }
+
+    private static int GenerateNumber()
+    {
+      var random = new Random();
+
+      return random.Next(1, 100000);
+    }
+
+    private static string GenerateString()
+    {
+      return Guid.NewGuid().ToString();
     }
 
     private static string GenerateLine()
     {
-      var String = Guid.NewGuid();
-      return $"{String.GetHashCode()}. {String}{Environment.NewLine}";
-    }
-
-    //TODO: duplicates on big volumes 
-    private string GenerateLineUnique()
-    {
-      var String = Guid.NewGuid();
-      return $"{String.GetHashCode()}. {String}{Environment.NewLine}";
+      return $"{GenerateNumber()}. {_string}{Environment.NewLine}";
     }
   }
 }

@@ -444,7 +444,10 @@ namespace Altium.Test.Sorter
 
     private static string Sanitize(string data)
     {
-      return data.Replace("\0", "");
+      if (data.Contains("\0"))
+        return data.Replace("\0", "");
+
+      return data;
     }
   }
 }
