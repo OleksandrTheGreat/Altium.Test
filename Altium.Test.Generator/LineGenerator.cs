@@ -5,7 +5,8 @@ namespace Altium.Test.Generator
 {
   public class LineGenerator : ILineGenerator
   {
-    private static string _string = GenerateString();
+    private static int MAX_NUMBER = 100_000;
+    private static Random _random = new Random();
     private static string _line = GenerateLine();
 
     private int _timesHit = 0;
@@ -19,45 +20,33 @@ namespace Altium.Test.Generator
 
       if (requiredTimes < 1)
       {
-        _string = GenerateString();
+        _line = GenerateLine();
 
-        return GenerateLine();
+        return _line;
       }
 
       if (_timesHit > requiredTimes)
       {
-        _string = GenerateString();
+        _line = GenerateLine();
         _timesHit = 0;
       }
 
       _timesHit++;
 
-      return GenerateLine();
+      return _line;
     }
 
     private static double CalculateTimes(int percentOfAppearance, long totalSize)
     {
-      var size = _string.Length;
+      var size = _line.Length;
       double posibleTimes = totalSize / size;
      
       return posibleTimes * percentOfAppearance / 100;
     }
 
-    private static int GenerateNumber()
-    {
-      var random = new Random();
-
-      return random.Next(1, 100000);
-    }
-
-    private static string GenerateString()
-    {
-      return Guid.NewGuid().ToString();
-    }
-
     private static string GenerateLine()
     {
-      return $"{GenerateNumber()}. {_string}{Environment.NewLine}";
+      return $"{_random.Next(1, MAX_NUMBER)}. {Guid.NewGuid().ToString()}{Environment.NewLine}";
     }
   }
 }
